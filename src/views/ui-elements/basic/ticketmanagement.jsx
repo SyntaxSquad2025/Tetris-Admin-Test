@@ -1,4 +1,3 @@
-
 // "use client"
 
 // import { useState, useEffect } from "react"
@@ -373,7 +372,6 @@
 // }
 
 // export default TicketManagement
-
 
 // "use client"
 
@@ -997,10 +995,9 @@
 
 // export default TicketManagement
 
+"use client";
 
-"use client"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   CCard,
   CCardHeader,
@@ -1014,22 +1011,22 @@ import {
   CAlert,
   CSpinner,
   CFormSelect,
-} from "@coreui/react"
-import { FaDiamond, FaTicket, FaWallet } from "react-icons/fa6"
-import { getData, postData } from "../../../apiConfigs/apiCalls"
-import { GET_TICKET, UPDATE_TICKET } from "../../../apiConfigs/endpoints"
+} from "@coreui/react";
+import { FaDiamond, FaTicket, FaWallet } from "react-icons/fa6";
+import { getData, postData } from "../../../apiConfigs/apiCalls";
+import { GET_TICKET, UPDATE_TICKET } from "../../../apiConfigs/endpoints";
 
 const TicketManagement = () => {
   const [ticketSettings, setTicketSettings] = useState({
-    TicketId: "",
-    TicketQuantity: "",
-    AmountInToken: "",
-    DefaultAdminWallet: "",
-    Status: "ACTIVE",
-  })
-  const [loading, setLoading] = useState(false)
-  const [fetchLoading, setFetchLoading] = useState(false)
-  const [message, setMessage] = useState({ text: "", type: "" })
+    ticketId: "",
+    ticketQuantity: "",
+    amountInToken: "",
+    defaultAdminWallet: "",
+    status: "ACTIVE",
+  });
+  const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   // Dark theme colors (matching tasks page)
   const darkTheme = {
@@ -1046,118 +1043,123 @@ const TicketManagement = () => {
     border: "rgba(255, 255, 255, 0.1)",
     success: "#28a745",
     danger: "#dc3545",
-  }
+  };
 
   // Fetch ticket settings on mount
   const fetchTicketSettings = async () => {
-    setFetchLoading(true)
+    setFetchLoading(true);
     try {
-      const response = await getData(GET_TICKET)
-      console.log("Fetched ticket data:", response)
+      const response = await getData(GET_TICKET);
+      console.log("Fetched ticket data:", response);
 
       if (response?.success && response?.data) {
         setTicketSettings({
-          TicketId: response.data._id || "",
-          TicketQuantity: response.data.ticketQuantity || "",
-          AmountInToken: response.data.amountInToken || "",
-          DefaultAdminWallet: response.data.defaultAdminWallet || "",
-          Status: response.data.status || "ACTIVE",
-        })
+          ticketId: response.data._id || "",
+          ticketQuantity: response.data.ticketQuantity || "",
+          amountInToken: response.data.amountInToken || "",
+          defaultAdminWallet: response.data.defaultAdminWallet || "",
+          status: response.data.status || "ACTIVE",
+        });
       }
     } catch (error) {
-      console.error("Error fetching ticket settings:", error)
+      console.error("Error fetching ticket settings:", error);
       setMessage({
         text: "Failed to load ticket settings. Please try again.",
         type: "danger",
-      })
+      });
     } finally {
-      setFetchLoading(false)
+      setFetchLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTicketSettings()
-  }, [])
+    fetchTicketSettings();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setTicketSettings((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setTicketSettings((prev) => {
+    const updatedSettings = { ...prev, [name]: value };
+    console.log(updatedSettings); // Debugging the state update
+    return updatedSettings;
+  });
+};
+
 
   const clearMessage = () => {
-    setTimeout(() => setMessage({ text: "", type: "" }), 3000)
-  }
+    setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+  };
 
   // Save ticket conversion settings
   const handleSaveTicketSettings = async () => {
     // Validation
-    if (!ticketSettings.TicketQuantity || !ticketSettings.AmountInToken) {
+    if (!ticketSettings.ticketQuantity || !ticketSettings.amountInToken) {
       setMessage({
         text: "Please fill in all required fields (Ticket Quantity and Amount in Token)",
         type: "danger",
-      })
-      clearMessage()
-      return
+      });
+      clearMessage();
+      return;
     }
 
-    if (!ticketSettings.DefaultAdminWallet) {
+    if (!ticketSettings.defaultAdminWallet) {
       setMessage({
         text: "Please provide a default admin wallet address",
         type: "danger",
-      })
-      clearMessage()
-      return
+      });
+      clearMessage();
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     try {
       const requestBody = {
-        TicketQuantity: Number(ticketSettings.TicketQuantity),
-        AmountInToken: Number(ticketSettings.AmountInToken),
-        DefaultAdminWallet: ticketSettings.DefaultAdminWallet,
-        Status: ticketSettings.Status,
-      }
+        ticketQuantity: Number(ticketSettings.ticketQuantity),
+        amountInToken: Number(ticketSettings.amountInToken),
+        defaultAdminWallet: ticketSettings.defaultAdminWallet,
+        status: ticketSettings.status,
+      };
 
       // If we have a TicketId, include it for update
-      if (ticketSettings.TicketId) {
-        requestBody.TicketId = ticketSettings.TicketId
+      if (ticketSettings.ticketId) {
+        requestBody.ticketId = ticketSettings._id || ticketSettings.ticketId;
       }
 
-      console.log("Sending request:", requestBody)
+      console.log("Sending request:", requestBody);
 
-      const response = await postData(UPDATE_TICKET, requestBody)
-      console.log("Response:", response)
+      const response = await postData(UPDATE_TICKET, requestBody);
+      console.log("Response:", response);
 
       if (response?.success) {
         setMessage({
-          text: `Ticket conversion settings ${ticketSettings.TicketId ? "updated" : "created"} successfully!`,
+          text: `Ticket conversion settings ${ticketSettings._id || ticketSettings.ticketId ? "updated" : "created"} successfully!`,
           type: "success",
-        })
+        });
 
         // Update the TicketId if it was a new creation
-        if (!ticketSettings.TicketId && response.data?._id) {
+        if (
+          (!ticketSettings.ticketId && response.data?._id) ||
+          response.data?.ticketId
+        ) {
           setTicketSettings((prev) => ({
             ...prev,
-            TicketId: response.data._id,
-          }))
+            TicketId: response.data._id || response.data.ticketId,
+          }));
         }
       } else {
-        throw new Error(response?.message || "Failed to save ticket settings")
+        throw new Error(response?.message || "Failed to save ticket settings");
       }
     } catch (error) {
-      console.error("Error saving ticket settings:", error)
+      console.error("Error saving ticket settings:", error);
       setMessage({
         text: error.message || "Failed to save ticket settings",
         type: "danger",
-      })
+      });
     } finally {
-      setLoading(false)
-      clearMessage()
+      setLoading(false);
+      clearMessage();
     }
-  }
+  };
 
   if (fetchLoading) {
     return (
@@ -1215,10 +1217,18 @@ const TicketManagement = () => {
                     margin: "0 auto 20px",
                   }}
                 />
-                <h3 style={{ color: darkTheme.textPrimary, fontWeight: "300", marginBottom: "10px" }}>
+                <h3
+                  style={{
+                    color: darkTheme.textPrimary,
+                    fontWeight: "300",
+                    marginBottom: "10px",
+                  }}
+                >
                   Loading ticket settings...
                 </h3>
-                <p style={{ color: darkTheme.textSecondary }}>Fetching ticket data...</p>
+                <p style={{ color: darkTheme.textSecondary }}>
+                  Fetching ticket data...
+                </p>
               </div>
             </CCol>
           </CRow>
@@ -1226,16 +1236,25 @@ const TicketManagement = () => {
 
         <style jsx>{`
           @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
           }
           @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%,
+            100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-20px);
+            }
           }
         `}</style>
       </div>
-    )
+    );
   }
 
   return (
@@ -1300,17 +1319,26 @@ const TicketManagement = () => {
               >
                 <h5 className="fw-bold">Ticket Conversion Management</h5>
               </CCardHeader>
-              <CCardBody className="p-4" style={{ background: darkTheme.bgCard }}>
+              <CCardBody
+                className="p-4"
+                style={{ background: darkTheme.bgCard }}
+              >
                 {message.text && (
                   <CAlert
                     color={message.type}
                     dismissible
                     onClose={() => setMessage({ text: "", type: "" })}
                     style={{
-                      background: message.type === "success" ? `${darkTheme.success}20` : `${darkTheme.danger}20`,
+                      background:
+                        message.type === "success"
+                          ? `${darkTheme.success}20`
+                          : `${darkTheme.danger}20`,
                       border: `1px solid ${message.type === "success" ? darkTheme.success : darkTheme.danger}`,
                       borderRadius: "15px",
-                      color: message.type === "success" ? darkTheme.success : darkTheme.danger,
+                      color:
+                        message.type === "success"
+                          ? darkTheme.success
+                          : darkTheme.danger,
                     }}
                   >
                     {message.text}
@@ -1318,14 +1346,22 @@ const TicketManagement = () => {
                 )}
 
                 <div className="mb-4">
-                  <CFormLabel style={{ color: darkTheme.textSecondary, fontWeight: "600" }}>Ticket Quantity</CFormLabel>
+                  <CFormLabel
+                    style={{
+                      color: darkTheme.textSecondary,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Ticket Quantity
+                  </CFormLabel>
                   <div className="position-relative">
                     <CFormInput
                       type="number"
-                      name="TicketQuantity"
-                      value={ticketSettings.TicketQuantity}
+                      name="ticketQuantity"
+                      value={ticketSettings.ticketQuantity}
                       onChange={handleChange}
                       placeholder="Enter ticket quantity"
+                      disabled={false}
                       style={{
                         background: darkTheme.bgSecondary,
                         border: `1px solid ${darkTheme.border}`,
@@ -1334,12 +1370,12 @@ const TicketManagement = () => {
                         padding: "12px 50px 12px 15px",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = darkTheme.accent3
-                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`
+                        e.target.style.borderColor = darkTheme.accent3;
+                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`;
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = darkTheme.border
-                        e.target.style.boxShadow = "none"
+                        e.target.style.borderColor = darkTheme.border;
+                        e.target.style.boxShadow = "none";
                       }}
                       required
                     />
@@ -1358,13 +1394,20 @@ const TicketManagement = () => {
                 </div>
 
                 <div className="mb-4">
-                  <CFormLabel style={{ color: darkTheme.textSecondary, fontWeight: "600" }}>Amount in Token</CFormLabel>
+                  <CFormLabel
+                    style={{
+                      color: darkTheme.textSecondary,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Amount in Token
+                  </CFormLabel>
                   <div className="position-relative">
                     <CFormInput
                       type="number"
                       step="0.000001"
-                      name="AmountInToken"
-                      value={ticketSettings.AmountInToken}
+                      name="amountInToken"
+                      value={ticketSettings.amountInToken}
                       onChange={handleChange}
                       placeholder="Enter token amount"
                       style={{
@@ -1375,12 +1418,12 @@ const TicketManagement = () => {
                         padding: "12px 50px 12px 15px",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = darkTheme.accent3
-                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`
+                        e.target.style.borderColor = darkTheme.accent3;
+                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`;
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = darkTheme.border
-                        e.target.style.boxShadow = "none"
+                        e.target.style.borderColor = darkTheme.border;
+                        e.target.style.boxShadow = "none";
                       }}
                       required
                     />
@@ -1399,12 +1442,19 @@ const TicketManagement = () => {
                 </div>
 
                 <div className="mb-4">
-                  <CFormLabel style={{ color: darkTheme.textSecondary, fontWeight: "600" }}>Admin Wallet</CFormLabel>
+                  <CFormLabel
+                    style={{
+                      color: darkTheme.textSecondary,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Admin Wallet
+                  </CFormLabel>
                   <div className="position-relative">
                     <CFormInput
                       type="text"
-                      name="DefaultAdminWallet"
-                      value={ticketSettings.DefaultAdminWallet}
+                      name="defaultAdminWallet"
+                      value={ticketSettings.defaultAdminWallet}
                       onChange={handleChange}
                       placeholder="Enter admin wallet address"
                       style={{
@@ -1415,12 +1465,12 @@ const TicketManagement = () => {
                         padding: "12px 50px 12px 15px",
                       }}
                       onFocus={(e) => {
-                        e.target.style.borderColor = darkTheme.accent3
-                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`
+                        e.target.style.borderColor = darkTheme.accent3;
+                        e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`;
                       }}
                       onBlur={(e) => {
-                        e.target.style.borderColor = darkTheme.border
-                        e.target.style.boxShadow = "none"
+                        e.target.style.borderColor = darkTheme.border;
+                        e.target.style.boxShadow = "none";
                       }}
                       required
                     />
@@ -1439,10 +1489,17 @@ const TicketManagement = () => {
                 </div>
 
                 <div className="mb-4">
-                  <CFormLabel style={{ color: darkTheme.textSecondary, fontWeight: "600" }}>Status</CFormLabel>
+                  <CFormLabel
+                    style={{
+                      color: darkTheme.textSecondary,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Status
+                  </CFormLabel>
                   <CFormSelect
-                    name="Status"
-                    value={ticketSettings.Status}
+                    name="status"
+                    value={ticketSettings.status}
                     onChange={handleChange}
                     style={{
                       background: darkTheme.bgSecondary,
@@ -1452,16 +1509,16 @@ const TicketManagement = () => {
                       padding: "12px 15px",
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = darkTheme.accent3
-                      e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`
+                      e.target.style.borderColor = darkTheme.accent3;
+                      e.target.style.boxShadow = `0 0 0 3px rgba(139, 92, 246, 0.2)`;
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = darkTheme.border
-                      e.target.style.boxShadow = "none"
+                      e.target.style.borderColor = darkTheme.border;
+                      e.target.style.boxShadow = "none";
                     }}
                     options={[
-                      { label: "Active", value: "ACTIVE" },
-                      { label: "Inactive", value: "INACTIVE" },
+                      { label: "ACTIVE", value: "ACTIVE" },
+                      { label: "INACTIVE", value: "INACTIVE" },
                     ]}
                   />
                 </div>
@@ -1480,12 +1537,13 @@ const TicketManagement = () => {
                       transition: "all 0.3s ease",
                     }}
                     onMouseEnter={(e) => {
-                      e.target.style.transform = "scale(1.05)"
-                      e.target.style.boxShadow = "0 10px 30px rgba(139, 92, 246, 0.4)"
+                      e.target.style.transform = "scale(1.05)";
+                      e.target.style.boxShadow =
+                        "0 10px 30px rgba(139, 92, 246, 0.4)";
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.transform = "scale(1)"
-                      e.target.style.boxShadow = "none"
+                      e.target.style.transform = "scale(1)";
+                      e.target.style.boxShadow = "none";
                     }}
                   >
                     {loading ? (
@@ -1493,7 +1551,7 @@ const TicketManagement = () => {
                         <CSpinner size="sm" className="me-2" />
                         Saving...
                       </>
-                    ) : ticketSettings.TicketId ? (
+                    ) : ticketSettings._id || ticketSettings.ticketId ? (
                       "Update Settings"
                     ) : (
                       "Create Settings"
@@ -1501,7 +1559,7 @@ const TicketManagement = () => {
                   </CButton>
                 </div>
 
-                {ticketSettings.TicketId && (
+                {ticketSettings.ticketId && (
                   <div className="text-center mt-3">
                     {/* <small className="text-muted">Current Settings ID: {ticketSettings.TicketId}</small> */}
                   </div>
@@ -1531,7 +1589,10 @@ const TicketManagement = () => {
               >
                 <h6 className="fw-bold mb-0">Conversion Rate Information</h6>
               </CCardHeader>
-              <CCardBody className="p-4" style={{ background: darkTheme.bgCard }}>
+              <CCardBody
+                className="p-4"
+                style={{ background: darkTheme.bgCard }}
+              >
                 <div className="row text-center">
                   <div className="col-md-6">
                     <div
@@ -1543,19 +1604,22 @@ const TicketManagement = () => {
                         transition: "all 0.3s ease",
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.borderColor = darkTheme.accent3
-                        e.target.style.boxShadow = `0 5px 20px rgba(139, 92, 246, 0.2)`
+                        e.target.style.borderColor = darkTheme.accent3;
+                        e.target.style.boxShadow = `0 5px 20px rgba(139, 92, 246, 0.2)`;
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.borderColor = darkTheme.border
-                        e.target.style.boxShadow = "none"
+                        e.target.style.borderColor = darkTheme.border;
+                        e.target.style.boxShadow = "none";
                       }}
                     >
-                      <h6 className="mb-1" style={{ color: darkTheme.textSecondary }}>
+                      <h6
+                        className="mb-1"
+                        style={{ color: darkTheme.textSecondary }}
+                      >
                         Tickets
                       </h6>
                       <h4 className="mb-0" style={{ color: darkTheme.accent3 }}>
-                        {ticketSettings.TicketQuantity || "0"}
+                        {ticketSettings.ticketQuantity || "0"}
                       </h4>
                     </div>
                   </div>
@@ -1569,34 +1633,46 @@ const TicketManagement = () => {
                         transition: "all 0.3s ease",
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.borderColor = darkTheme.success
-                        e.target.style.boxShadow = `0 5px 20px rgba(40, 167, 69, 0.2)`
+                        e.target.style.borderColor = darkTheme.success;
+                        e.target.style.boxShadow = `0 5px 20px rgba(40, 167, 69, 0.2)`;
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.borderColor = darkTheme.border
-                        e.target.style.boxShadow = "none"
+                        e.target.style.borderColor = darkTheme.border;
+                        e.target.style.boxShadow = "none";
                       }}
                     >
-                      <h6 className="mb-1" style={{ color: darkTheme.textSecondary }}>
+                      <h6
+                        className="mb-1"
+                        style={{ color: darkTheme.textSecondary }}
+                      >
                         Token Amount
                       </h6>
                       <h4 className="mb-0" style={{ color: darkTheme.success }}>
-                        {ticketSettings.AmountInToken || "0"}
+                        {ticketSettings.amountInToken || "0"}
                       </h4>
                     </div>
                   </div>
                 </div>
-                {ticketSettings.TicketQuantity && ticketSettings.AmountInToken && (
-                  <div className="text-center mt-3">
-                    <small style={{ color: darkTheme.textSecondary }}>
-                      Rate: 1 Token ={" "}
-                      <span style={{ color: darkTheme.accent3, fontWeight: "600" }}>
-                        {(Number(ticketSettings.TicketQuantity) / Number(ticketSettings.AmountInToken)).toFixed(6)}
-                      </span>{" "}
-                      Tickets
-                    </small>
-                  </div>
-                )}
+                {ticketSettings.ticketQuantity &&
+                  ticketSettings.amountInToken && (
+                    <div className="text-center mt-3">
+                      <small style={{ color: darkTheme.textSecondary }}>
+                        Rate: 1 Token ={" "}
+                        <span
+                          style={{
+                            color: darkTheme.accent3,
+                            fontWeight: "600",
+                          }}
+                        >
+                          {(
+                            Number(ticketSettings.ticketQuantity) /
+                            Number(ticketSettings.amountInToken)
+                          ).toFixed(6)}
+                        </span>{" "}
+                        Tickets
+                      </small>
+                    </div>
+                  )}
               </CCardBody>
             </CCard>
           </CCol>
@@ -1606,16 +1682,25 @@ const TicketManagement = () => {
       {/* CSS animations */}
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
         }
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default TicketManagement
+export default TicketManagement;

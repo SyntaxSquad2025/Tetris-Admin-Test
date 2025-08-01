@@ -1596,8 +1596,8 @@ const ReferralReward = () => {
                       e.target.style.boxShadow = "none"
                     }}
                   >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
                   </CFormSelect>
                 </div>
 
