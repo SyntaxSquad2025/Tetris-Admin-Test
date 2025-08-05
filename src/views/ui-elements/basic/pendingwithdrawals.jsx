@@ -608,7 +608,7 @@ const PendingWithdrawals = () => {
     try {
       // Fetch all pending withdrawals with a high limit
       const response = await getData(
-        `${GET_ALL_WITHDRAWALS}?status=pending&page=1&limit=1000000000000000000000000000000`
+        `${GET_ALL_WITHDRAWALS}?status=PENDING&page=1&limit=1000000000000000000000000000000`
       );
       const allPending = response?.withdrawals || [];
 

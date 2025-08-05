@@ -449,7 +449,7 @@ const TransferWithdrawals = () => {
     try {
       // Fetch all transferred withdrawals with a high limit
       const response = await getData(
-        `${GET_ALL_WITHDRAWALS}?status=transferred&page=1&limit=10000000000000000000000000000000000`
+        `${GET_ALL_WITHDRAWALS}?status=TRANSFERRED&page=1&limit=10000000000000000000000000000000000`
       );
       const allTransferred = response?.withdrawals || [];
 

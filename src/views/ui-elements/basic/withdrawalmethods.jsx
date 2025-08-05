@@ -647,14 +647,14 @@ const WithdrawalMethods = () => {
 
   const handleAdd = () => {
     setSelectedMethod({
-      Token_Mint: "",
-      Symbol: "",
+      token_Mint: "",
+      symbol: "",
       minWithdrawal: 0,
       maxWithdrawal: 0,
-      Fixed_Charge: 0,
-      Percentage_Charge: 0,
-      Fee_wallet: "",
-      Withdraw_Note: "",
+      fixed_Charge: 0,
+      percentage_Charge: 0,
+      fee_Wallet: "",
+      withdraw_Note: "",
       withdrawallimits: 0,
       status: "ACTIVE",
     });
@@ -687,14 +687,14 @@ const WithdrawalMethods = () => {
       if (!userId) throw new Error("User ID not found. Please log in again.");
 
       const requestBody = {
-        Token_Mint: selectedMethod.Token_Mint,
-        Symbol: selectedMethod.Symbol,
+        token_Mint: selectedMethod.token_Mint,
+        symbol: selectedMethod.symbol,
         minWithdrawal: Number(selectedMethod.minWithdrawal),
         maxWithdrawal: Number(selectedMethod.maxWithdrawal),
-        Fixed_Charge: Number(selectedMethod.Fixed_Charge),
-        Percentage_Charge: Number(selectedMethod.Percentage_Charge),
-        Fee_wallet: selectedMethod.Fee_wallet,
-        Withdraw_Note: selectedMethod.Withdraw_Note,
+        fixed_Charge: Number(selectedMethod.fixed_Charge),
+        percentage_Charge: Number(selectedMethod.percentage_Charge),
+        fee_Wallet: selectedMethod.fee_Wallet,
+        withdraw_Note: selectedMethod.withdraw_Note,
         withdrawalCount: Number(selectedMethod.withdrawalCount), // Ensure correct key here
         status: selectedMethod.status,
         addedBy: userId,
@@ -1646,7 +1646,7 @@ const WithdrawalMethods = () => {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label
-                  htmlFor="Token_Mint"
+                  htmlFor="token_Mint"
                   style={{
                     color: darkTheme.textPrimary,
                     fontWeight: "600",
@@ -1658,9 +1658,9 @@ const WithdrawalMethods = () => {
                 </label>
                 <CFormInput
                   type="text"
-                  id="Token_Mint"
-                  name="Token_Mint"
-                  value={selectedMethod.Token_Mint || ""}
+                  id="token_Mint"
+                  name="token_Mint"
+                  value={selectedMethod.token_Mint || ""}
                   onChange={handleChange}
                   placeholder="Enter token mint address"
                   style={{
@@ -1674,7 +1674,7 @@ const WithdrawalMethods = () => {
               </div>
               <div className="col-md-6">
                 <label
-                  htmlFor="Symbol"
+                  htmlFor="symbol"
                   style={{
                     color: darkTheme.textPrimary,
                     fontWeight: "600",
@@ -1686,9 +1686,9 @@ const WithdrawalMethods = () => {
                 </label>
                 <CFormInput
                   type="text"
-                  id="Symbol"
-                  name="Symbol"
-                  value={selectedMethod.Symbol || ""}
+                  id="symbol"
+                  name="symbol"
+                  value={selectedMethod.symbol || ""}
                   onChange={handleChange}
                   placeholder="Enter token symbol"
                   style={{
@@ -1764,7 +1764,7 @@ const WithdrawalMethods = () => {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label
-                  htmlFor="Fixed_Charge"
+                  htmlFor="fixed_Charge"
                   style={{
                     color: darkTheme.textPrimary,
                     fontWeight: "600",
@@ -1776,9 +1776,9 @@ const WithdrawalMethods = () => {
                 </label>
                 <CFormInput
                   type="number"
-                  id="Fixed_Charge"
-                  name="Fixed_Charge"
-                  value={selectedMethod.Fixed_Charge || 0}
+                  id="fixed_Charge"
+                  name="fixed_Charge"
+                  value={selectedMethod.fixed_Charge || 0}
                   onChange={handleChange}
                   placeholder="Enter fixed charge amount"
                   style={{
@@ -1792,7 +1792,7 @@ const WithdrawalMethods = () => {
               </div>
               <div className="col-md-6">
                 <label
-                  htmlFor="Percentage_Charge"
+                  htmlFor="percentage_Charge"
                   style={{
                     color: darkTheme.textPrimary,
                     fontWeight: "600",
@@ -1804,9 +1804,9 @@ const WithdrawalMethods = () => {
                 </label>
                 <CFormInput
                   type="number"
-                  id="Percentage_Charge"
-                  name="Percentage_Charge"
-                  value={selectedMethod.Percentage_Charge || 0}
+                  id="percentage_Charge"
+                  name="percentage_Charge"
+                  value={selectedMethod.percentage_Charge || 0}
                   onChange={handleChange}
                   placeholder="Enter percentage charge"
                   style={{
@@ -1823,7 +1823,7 @@ const WithdrawalMethods = () => {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label
-                  htmlFor="Fee_wallet"
+                  htmlFor="fee_Wallet"
                   style={{
                     color: darkTheme.textPrimary,
                     fontWeight: "600",
@@ -1835,9 +1835,9 @@ const WithdrawalMethods = () => {
                 </label>
                 <CFormInput
                   type="text"
-                  id="Fee_wallet"
-                  name="Fee_wallet"
-                  value={selectedMethod.Fee_wallet || ""}
+                  id="fee_Wallet"
+                  name="fee_Wallet"
+                  value={selectedMethod.fee_Wallet || ""}
                   onChange={handleChange}
                   placeholder="Enter fee wallet address"
                   style={{

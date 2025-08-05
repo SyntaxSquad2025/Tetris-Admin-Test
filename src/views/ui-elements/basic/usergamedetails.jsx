@@ -1843,10 +1843,10 @@ const UserGameDetails = () => {
           UserName: item.userName || item.referringUser?.userName || "N/A",
           GameTitle: item.gameTitle || "N/A",
           CreatedAt: item.timestamp ? new Date(item.timestamp).toLocaleString() : "N/A",
-          Description: getItemDescription(item),
-          Amount: getItemAmount(item),
-          Reward: getItemReward(item),
-          Balance: getItemBalance(item),
+          InitialBalance: item.initialBalance || item.InitalBalance || item.Initalbalance ||item.initialbalnce ||"N/A",
+          BetAmount: getItemAmount(item),
+          Prize: getItemReward(item),
+          FinalBalance: getItemBalance(item),
           Status: getItemStatus(item),
         }))
       } else if (historyType === "gamehistory") {

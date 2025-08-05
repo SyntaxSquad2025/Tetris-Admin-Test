@@ -1351,7 +1351,7 @@ const LevelMultiplier = () => {
     speedPerLevel: "",
     multiplier: "",
     quitPopUp: "",
-    lives: "",
+    // lives: "",
   });
   const [newLevel, setNewLevel] = useState({
     level: "",
@@ -1360,7 +1360,7 @@ const LevelMultiplier = () => {
     speedPerLevel: "",
     multiplier: "",
     quitPopUp: "",
-    lives: "",
+    // lives: "",
   });
   const [newAdSDK, setNewAdSDK] = useState({
     adSDK: "",
@@ -1445,7 +1445,7 @@ const LevelMultiplier = () => {
           speedPerLevel: "",
           multiplier: "",
           quitPopUp: "",
-          lives: "",
+          // lives: "",
         },
       ]);
     }
@@ -1480,7 +1480,7 @@ const LevelMultiplier = () => {
           speedPerLevel: "",
           multiplier: "",
           quitPopUp: "",
-          lives: "",
+          // lives: "",
         },
       ]);
     }
@@ -1526,7 +1526,7 @@ const LevelMultiplier = () => {
       speedPerLevel: "",
       multiplier: "",
       quitPopUp: "",
-      lives: "",
+      // lives: "",
     });
 
     setAddLevelModalVisible(true);
@@ -1595,7 +1595,7 @@ const LevelMultiplier = () => {
       speedPerLevel: "",
       multiplier: "",
       quitPopUp: "",
-      lives: "",
+      // lives: "",
     });
   };
 
@@ -2410,7 +2410,7 @@ const LevelMultiplier = () => {
                             "speedPerLevel",
                             "multiplier",
                             "quitPopUp",
-                            "Lives",
+                            // "Lives",
                           ].map((header) => (
                             <th
                               key={header}
@@ -2499,7 +2499,7 @@ const LevelMultiplier = () => {
                             >
                               {row.quitPopUp}
                             </td>
-                            <td
+                            {/* <td
                               style={{
                                 padding: "15px",
                                 color: darkTheme.textPrimary,
@@ -2508,7 +2508,7 @@ const LevelMultiplier = () => {
                               }}
                             >
                               {row.lives}
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>
@@ -2981,7 +2981,7 @@ const LevelMultiplier = () => {
                             "speedPerLevel",
                             "multiplier",
                             "quitPopUp",
-                            "Lives",
+                            // "Lives",
                             "Actions",
                           ].map((header) => (
                             <th
@@ -3071,7 +3071,7 @@ const LevelMultiplier = () => {
                             >
                               {row.quitPopUp}
                             </td>
-                            <td
+                            {/* <td
                               style={{
                                 padding: "15px",
                                 color: darkTheme.textPrimary,
@@ -3080,7 +3080,7 @@ const LevelMultiplier = () => {
                               }}
                             >
                               {row.lives}
-                            </td>
+                            </td> */}
                             <td style={{ padding: "15px", border: "none" }}>
                               <div style={{ display: "flex", gap: "5px" }}>
                                 <Button
@@ -3425,7 +3425,7 @@ const LevelMultiplier = () => {
                 { label: "Speed Per Level", field: "speedPerLevel" },
                 { label: "Multiplier", field: "multiplier" },
                 { label: "Quit PopUp", field: "quitPopUp" },
-                { label: "Lives", field: "lives" },
+                // { label: "Lives", field: "lives" },
               ].map(({ label, field }) => (
                 <Col md={6} key={field}>
                   <Form.Group>
@@ -3563,7 +3563,7 @@ const LevelMultiplier = () => {
                 { label: "Speed Per Level", field: "speedPerLevel" },
                 { label: "Multiplier", field: "multiplier" },
                 { label: "Quit PopUp", field: "quitPopUp" },
-                { label: "Lives", field: "lives" },
+                // { label: "Lives", field: "lives" },
               ].map(({ label, field }) => (
                 <Col md={6} key={field}>
                   <Form.Group>

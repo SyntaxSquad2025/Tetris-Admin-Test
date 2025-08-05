@@ -132,7 +132,7 @@ console.log("API_BASE_URL:", API_BASE_URL)
 
 // Function to encrypt the secret key with a timestamp
 export const encryptSecretKey = (key, timestamp) => {
-  console.log(typeof timestamp)
+  // console.log(typeof timestamp)
 
   const payloadToEncrypt = `${key}&TimeStamp=${timestamp}`
   const encrypted = CryptoJS.AES.encrypt(payloadToEncrypt, key).toString()
@@ -142,7 +142,7 @@ export const encryptSecretKey = (key, timestamp) => {
 // ✅ Auth Headers
 const getAuthHeaders = (key) => {
   const token = localStorage.getItem("token") // Retrieving token from localStorage
-  console.log(key, "keys")
+  // console.log(key, "keys")
 
   return {
     "Content-Type": "application/json", // Setting content-type to JSON
@@ -154,7 +154,7 @@ const getAuthHeaders = (key) => {
 export const getData = async (endpoint, params = {}) => {
   try {
     const clientid = encryptSecretKey(import.meta.env.VITE_SECRET_SW_KEY, new Date().getTime())
-    console.log(clientid, "clientid clientid")
+    // console.log(clientid, "clientid clientid")
 
     const response = await axios.get(`${API_BASE_URL}${endpoint}`, {
       headers: getAuthHeaders(encryptSecretKey(import.meta.env.VITE_SECRET_SW_KEY, new Date().getTime())),

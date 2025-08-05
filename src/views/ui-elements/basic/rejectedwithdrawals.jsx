@@ -412,7 +412,7 @@ const RejectedWithdrawals = () => {
     try {
       // Fetch all rejected withdrawals with a high limit
       const response = await getData(
-        `${GET_ALL_WITHDRAWALS}?status=rejected&page=1&limit=10000000000000000000000000000000000`
+        `${GET_ALL_WITHDRAWALS}?status=REJECTED&page=1&limit=10000000000000000000000000000000000`
       );
       const allRejected = response?.withdrawals || [];
 
@@ -420,18 +420,22 @@ const RejectedWithdrawals = () => {
         alert("No data to export");
         return;
       }
-
+ 
       const formattedData = allRejected.map((withdrawal) => ({
         UserId: withdrawal.userId || "N/A",
         UserName: withdrawal.userName || "N/A",
-        Amount: withdrawal.amount || 0,
-        "Created At": withdrawal.createdAt
+        Network: withdrawal.token || "N/A",
+        Initiated: withdrawal.createdAt
           ? new Date(withdrawal.createdAt).toLocaleString()
           : "N/A",
-        "Updated At": withdrawal.updatedAt
-          ? new Date(withdrawal.updatedAt).toLocaleString()
-          : "N/A",
-        "Rejection Reason": withdrawal.reason || "N/A",
+        Amount: withdrawal.amount || 0,
+        Charge: withdrawal.charge || 0,
+        USDT_Amount: withdrawal.usdt_Amount || 0,
+        AfterCharge: withdrawal.after_Charge || 0,
+        RejectionReason: withdrawal.reason || "N/A",
+        // UpdatedAt: withdrawal.updatedAt
+        //   ? new Date(withdrawal.updatedAt).toLocaleString()
+        //   : "N/A",
         Status: withdrawal.status || "N/A",
       }));
 

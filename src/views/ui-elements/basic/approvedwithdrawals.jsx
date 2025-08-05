@@ -590,7 +590,7 @@ const ApprovedWithdrawals = () => {
     try {
       // Fetch all approved withdrawals with a high limit
       const response = await getData(
-        `${GET_ALL_WITHDRAWALS}?status=approved&page=1&limit=10000000000000000000000000000000000`
+        `${GET_ALL_WITHDRAWALS}?status=APPROVED&page=1&limit=10000000000000000000000000000000000`
       );
       const allApproved = response?.withdrawals || [];
 
@@ -661,63 +661,136 @@ const ApprovedWithdrawals = () => {
   }, [selectedRows, withdrawals]);
 
   // Approve button logic with TON wallet
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    if (selectedRows.length < 1) {
-      toast.error("Please select at least one withdrawal to approve.");
+  //   if (selectedRows.length < 1) {
+  //     toast.error("Please select at least one withdrawal to approve.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const messages = [];
+
+  //     selectedRows.forEach((row) => {
+  //       messages.push({
+  //         address: row.walletAddress,
+  //         amount: Math.round(row.Token_Amount * 1e9),
+  //       });
+
+  //       messages.push({
+  //         address: feeWallet,
+  //         amount: Math.round(row.Fee_tokens * 1e9),
+  //       });
+  //     });
+
+  //     const myTransaction = {
+  //       validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+  //       messages,
+  //     };
+
+  //     const result = await tonConnectUI.sendTransaction(myTransaction);
+
+  //     if (result) {
+  //       console.log("transaction", result);
+
+  //       const responseData = {
+  //         hash: result.boc,
+  //         _id: selectedRows,
+  //       };
+
+  //       console.log("responseData", responseData);
+
+  //       try {
+  //         const response = await postData(GET_WITHDRAWAL_METHODS, responseData);
+  //         console.log("Response from postData:", response);
+  //         toast.success("Task updated successfully!");
+  //         // Refresh the data after successful transfer
+  //         await fetchWithdrawals(currentPage);
+  //         setSelectedRows([]);
+  //       } catch (error) {
+  //         setError(error.message || "Something went wrong.");
+  //         toast.error(error.message || "Something went wrong.");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Transaction failed:", error);
+  //     toast.error("An error occurred during the transaction.");
+  //   }
+  // };
+  // Approve button logic with TON wallet
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  if (selectedRows.length < 1) {
+    toast.error("Please select at least one withdrawal to approve.");
+    return;
+  }
+
+  try {
+    const messages = [];
+
+    selectedRows.forEach((row) => {
+      // Fix: Handle null/undefined values and ensure they're valid numbers
+      const tokenAmount = row.Token_Amount || row.token_Amount || 0;
+      const feeTokens = row.Fee_tokens || row.fee_Tokens || 0;
+      
+      // Only add messages if amounts are valid and greater than 0
+      if (tokenAmount > 0 && row.walletAddress) {
+        messages.push({
+          address: row.walletAddress,
+          amount: Math.round(parseFloat(tokenAmount) * 1e9),
+        });
+      }
+
+      if (feeTokens > 0 && feeWallet) {
+        messages.push({
+          address: feeWallet,
+          amount: Math.round(parseFloat(feeTokens) * 1e9),
+        });
+      }
+    });
+
+    // Check if we have valid messages to send
+    if (messages.length === 0) {
+      toast.error("No valid transactions to process. Please check the withdrawal amounts.");
       return;
     }
 
-    try {
-      const messages = [];
+    const myTransaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+      messages,
+    };
 
-      selectedRows.forEach((row) => {
-        messages.push({
-          address: row.walletAddress,
-          amount: Math.round(row.Token_Amount * 1e9),
-        });
+    const result = await tonConnectUI.sendTransaction(myTransaction);
 
-        messages.push({
-          address: feeWallet,
-          amount: Math.round(row.Fee_tokens * 1e9),
-        });
-      });
+    if (result) {
+      console.log("transaction", result);
 
-      const myTransaction = {
-        validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
-        messages,
+      const responseData = {
+        hash: result.boc,
+        _id: selectedRows,
       };
 
-      const result = await tonConnectUI.sendTransaction(myTransaction);
+      console.log("responseData", responseData);
 
-      if (result) {
-        console.log("transaction", result);
-
-        const responseData = {
-          hash: result.boc,
-          _id: selectedRows,
-        };
-
-        console.log("responseData", responseData);
-
-        try {
-          const response = await postData(GET_WITHDRAWAL_METHODS, responseData);
-          console.log("Response from postData:", response);
-          toast.success("Task updated successfully!");
-          // Refresh the data after successful transfer
-          await fetchWithdrawals(currentPage);
-          setSelectedRows([]);
-        } catch (error) {
-          setError(error.message || "Something went wrong.");
-          toast.error(error.message || "Something went wrong.");
-        }
+      try {
+        const response = await postData(GET_WITHDRAWAL_METHODS, responseData);
+        console.log("Response from postData:", response);
+        toast.success("Task updated successfully!");
+        // Refresh the data after successful transfer
+        await fetchWithdrawals(currentPage);
+        setSelectedRows([]);
+      } catch (error) {
+        setError(error.message || "Something went wrong.");
+        toast.error(error.message || "Something went wrong.");
       }
-    } catch (error) {
-      console.error("Transaction failed:", error);
-      toast.error("An error occurred during the transaction.");
     }
-  };
+  } catch (error) {
+    console.error("Transaction failed:", error);
+    toast.error("An error occurred during the transaction.");
+  }
+};
 
   if (loading && withdrawals.length === 0) {
     return (
