@@ -611,12 +611,8 @@ const ApprovedWithdrawals = () => {
           Token_Amount: withdrawal.token_Amount || 0,
           Fee_Tokens: withdrawal.fee_Tokens || 0,
           Token: withdrawal.token || 0,
-          "Created At": withdrawal.createdAt
-            ? new Date(withdrawal.createdAt).toLocaleString()
-            : "N/A",
-          "Updated At": withdrawal.updatedAt
-            ? new Date(withdrawal.updatedAt).toLocaleString()
-            : "N/A",
+          "Created At": withdrawal.createdAt || "N/A",
+          "Updated At": withdrawal.updatedAt || "N/A",
           Status: withdrawal.status || "N/A",
         }))
       );
