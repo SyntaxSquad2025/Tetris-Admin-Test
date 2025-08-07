@@ -3401,16 +3401,20 @@ const LevelMultiplier = () => {
             <Button
               onClick={() => setAddLevelModalVisible(false)}
               style={{
+                position: "absolute",
+                bottom: "476px",
+                left: "700px",
                 background: "transparent",
                 border: "none",
                 color: "#fff",
-                fontSize: "24px",
+                fontSize: "34px",
                 padding: "0",
                 width: "30px",
-                height: "30px",
+                height: "1px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                cursor: "pointer",
               }}
             >
               ×

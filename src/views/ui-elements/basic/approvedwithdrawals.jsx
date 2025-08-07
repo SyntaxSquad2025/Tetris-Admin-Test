@@ -932,7 +932,7 @@ const handleSubmit = async (event) => {
                   {success}
                 </CAlert>
               )}
-
+{/* 
               {error && (
                 <CAlert
                   style={{
@@ -948,7 +948,7 @@ const handleSubmit = async (event) => {
                   <i className="fas fa-exclamation-triangle me-2" />
                   {error}
                 </CAlert>
-              )}
+              )} */}
 
               {/* Wallet connect + Approve button */}
               <div className="d-flex justify-content-end align-items-center mb-3">
